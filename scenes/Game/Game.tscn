@@ -1,0 +1,95 @@
+[gd_scene load_steps=13 format=3 uid="uid://cklphenhukdfx"]
+
+[ext_resource type="Script" uid="uid://jqooi2p2x8nh" path="res://scenes/Game/camera_script.gd" id="1_1asa3"]
+[ext_resource type="Script" uid="uid://bwaatfh72s6sw" path="res://scenes/Game/character_controller.gd" id="2_yqgss"]
+[ext_resource type="Texture2D" uid="uid://bx2v6bcq3jpvn" path="res://assets/entities/player/player-forward1.svg" id="3_lfncv"]
+[ext_resource type="Texture2D" uid="uid://iaykphhaxw5a" path="res://assets/entities/player/player-forward2.svg" id="4_i6kj0"]
+[ext_resource type="Texture2D" uid="uid://dws1akctd8vv" path="res://assets/entities/player/player-forward3.svg" id="5_21r26"]
+[ext_resource type="Script" uid="uid://bamqox5fm6ooj" path="res://scenes/Game/map_generator.gd" id="5_yqgss"]
+[ext_resource type="Texture2D" uid="uid://41q4l7f3dg62" path="res://assets/entities/player/player-forward4.svg" id="6_4i46p"]
+[ext_resource type="Texture2D" uid="uid://cfhx1tww07xjy" path="res://assets/tiles/wall.svg" id="7_lfncv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wbfu4"]
+resource_local_to_scene = true
+size = Vector2(108, 91)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1asa3"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_lfncv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_i6kj0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_21r26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4i46p")
+}],
+"loop": true,
+"name": &"move-forward",
+"speed": 4.0
+}]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t88pq"]
+resource_name = "Wall"
+texture = ExtResource("7_lfncv")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_r0x5m"]
+resource_local_to_scene = true
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_t88pq")
+
+[node name="Screen" type="Node2D"]
+
+[node name="Main" type="Camera2D" parent="."]
+auto_translate_mode = 2
+ignore_rotation = false
+zoom = Vector2(0.9, 0.9)
+limit_smoothed = true
+position_smoothing_enabled = true
+script = ExtResource("1_1asa3")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(53, -112)
+floor_stop_on_slope = false
+safe_margin = 0.001
+script = ExtResource("2_yqgss")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+show_behind_parent = true
+position = Vector2(0, 10.5)
+shape = SubResource("RectangleShape2D_wbfu4")
+
+[node name="Animations" type="AnimationPlayer" parent="Player"]
+root_node = NodePath("../..")
+
+[node name="PlayerTexture" type="AnimatedSprite2D" parent="Player"]
+scale = Vector2(0.75, 0.75)
+sprite_frames = SubResource("SpriteFrames_1asa3")
+animation = &"move-forward"
+
+[node name="Map" type="Node2D" parent="."]
+
+[node name="MainGrid" type="TileMapLayer" parent="Map"]
+texture_repeat = 2
+scale = Vector2(20, 20)
+tile_set = SubResource("TileSet_r0x5m")
+occlusion_enabled = false
+navigation_enabled = false
+script = ExtResource("5_yqgss")

@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=4 uid="uid://cklphenhukdfx"]
+
+[ext_resource type="Script" uid="uid://jqooi2p2x8nh" path="res://camera_script.gd" id="1_u44n3"]
+[ext_resource type="Script" uid="uid://bwaatfh72s6sw" path="res://character_controller.gd" id="1_wbfu4"]
+[ext_resource type="Texture2D" uid="uid://dfyaaykbxnwro" path="res://player-forward.svg" id="3_sb48q"]
+[ext_resource type="Texture2D" uid="uid://cfhx1tww07xjy" path="res://wall.svg" id="4_sb48q"]
+[ext_resource type="Script" uid="uid://bamqox5fm6ooj" path="res://map_generator.gd" id="5_t88pq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wbfu4"]
+resource_local_to_scene = true
+size = Vector2(108, 91)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t88pq"]
+texture = ExtResource("4_sb48q")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_r0x5m"]
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_t88pq")
+
+[node name="Screen" type="Node2D"]
+
+[node name="Main" type="Camera2D" parent="."]
+auto_translate_mode = 2
+ignore_rotation = false
+position_smoothing_enabled = true
+script = ExtResource("1_u44n3")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(53, -112)
+motion_mode = 1
+floor_stop_on_slope = false
+safe_margin = 0.001
+script = ExtResource("1_wbfu4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+process_physics_priority = 1
+texture = ExtResource("3_sb48q")
+region_rect = Rect2(-1.5, -0.5, 110.5, 118.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+show_behind_parent = true
+position = Vector2(0, 10.5)
+shape = SubResource("RectangleShape2D_wbfu4")
+
+[node name="Map" type="Node2D" parent="."]
+
+[node name="MainGrid" type="TileMapLayer" parent="Map"]
+texture_repeat = 2
+tile_map_data = PackedByteArray("AADc/+z/AQAAAAAAABDc/+3/AQAAAAAAABDc/+7/AQAAAAAAABDc/+//AQAAAAAAABDc//D/AQAAAAAAABDc//H/AQAAAAAAABDc//L/AQAAAAAAABDc//P/AQAAAAAAABDc//T/AQAAAAAAABDc//X/AQAAAAAAABDc//b/AQAAAAAAABDc//f/AQAAAAAAABDc//j/AQAAAAAAABDc//n/AQAAAAAAABDc//r/AQAAAAAAABDd/+z/AQAAAAAAABDd//r/AQAAAAAAABDe/+z/AQAAAAAAABDe//r/AQAAAAAAABDf/+z/AQAAAAAAABDf//r/AQAAAAAAABDg/+z/AQAAAAAAABDg//r/AQAAAAAAABDh/+z/AQAAAAAAABDh//r/AQAAAAAAABDi/+z/AQAAAAAAABDi//r/AQAAAAAAABDj/+z/AQAAAAAAABDj//r/AQAAAAAAABDj//v/AQAAAAAAABDj//z/AQAAAAAAABDj//3/AQAAAAAAABDj//7/AQAAAAAAABDj////AQAAAAAAABDk/+z/AQAAAAAAABDl/+z/AQAAAAAAABDm/+z/AQAAAAAAABDn/+z/AQAAAAAAABDo/+z/AQAAAAAAABDo//r/AQAAAAAAABDo//v/AQAAAAAAABDo//z/AQAAAAAAABDo//3/AQAAAAAAABDo//7/AQAAAAAAABDo////AQAAAAAAABDp/+z/AQAAAAAAABDp//r/AQAAAAAAABDq/+z/AQAAAAAAABDq//r/AQAAAAAAABDr/+z/AQAAAAAAABDr//r/AQAAAAAAABDs/+z/AQAAAAAAABDs//r/AQAAAAAAABDt/+z/AQAAAAAAABDt//r/AQAAAAAAABDu/+z/AQAAAAAAABDu//r/AQAAAAAAABDv/+z/AQAAAAAAABDv/+3/AQAAAAAAABDv/+7/AQAAAAAAABDv/+//AQAAAAAAABDv//D/AQAAAAAAABDv//H/AQAAAAAAABDv//L/AQAAAAAAABDv//P/AQAAAAAAABDv//T/AQAAAAAAABDv//X/AQAAAAAAABDv//b/AQAAAAAAABDv//f/AQAAAAAAABDv//j/AQAAAAAAABDv//n/AQAAAAAAABDv//r/AQAAAAAAABA=")
+tile_set = SubResource("TileSet_r0x5m")
+occlusion_enabled = false
+navigation_enabled = false
+script = ExtResource("5_t88pq")
